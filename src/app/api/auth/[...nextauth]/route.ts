@@ -1,7 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import type { JWT } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
 
 interface guildObject {
   id: String,
@@ -98,7 +97,7 @@ export const authOptions: AuthOptions =  {
             }
           }
         }
-        console.log(session)
+        // console.log(session)
         console.log("returning session")
       }
       return session;
