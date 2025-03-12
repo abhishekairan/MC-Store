@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface SidebarItem {
+export interface SidebarItem {
     label: string;
     active: boolean;
 }
 
 interface SidebarContextProps {
     sidebarItems: SidebarItem[];
-    setSidebarItems: (items: SidebarItem[]) => void;
+    setSidebarItems: React.Dispatch<React.SetStateAction<SidebarItem[]>>;
 }
 
 export const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);

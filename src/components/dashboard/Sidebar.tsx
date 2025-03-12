@@ -8,9 +8,9 @@ import { SidebarContext,useSidebar } from '@/context/context'
 
 const SidebarItem: React.FC<{ label: string; active: boolean }> = ({ label, active }) => {
   return (
-    <div className={`m-5 flex flex-col justify-center items-center w-full h-10 text-xl hover:text-2xl duration-300 cursor-pointer transition-all ${active ? 'text-blue-500' : ''}`}>
+    <button className={`m-5 flex flex-col justify-center items-center w-full h-10 cursor-pointer transition-all ${active ? 'text-blue-500 text-2xl' : 'text-xl hover:text-2xl duration-300'}`}>
       {label}
-    </div>
+    </button>
   );
 };
 

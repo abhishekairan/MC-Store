@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
-
+import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
 
 interface FormData {
   name: string;
@@ -12,12 +12,10 @@ interface FormData {
 
 const Page: React.FC = () => {
 
-  const sidebarContext = useSidebar()
-  console.log(sidebarContext)
-  const newSidebarContext = sidebarContext.sidebarItems
-  newSidebarContext[0].active = false
-  sidebarContext.setSidebarItems(newSidebarContext)
-  console.log(sidebarContext)
+  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar()
+
+  
+  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 1);
 
   const [formData, setFormData] = useState<FormData>({
     name: "Default Name",

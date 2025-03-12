@@ -1,15 +1,18 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from "@/components/header";
-import { Sidebar } from "@/components/dashboard/Sidebar";
-import { SidebarContext } from "@/context/context";
+import { Sidebar,  } from "@/components/dashboard/Sidebar";
+import { SidebarContext, SidebarItem } from "@/context/context";
 
 const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
 
     const [sidebarItems, setSidebarItems] = useState([
         { label: "General", active: true },
         { label: "Voting Site", active: false },
+        { label: "Test1", active: true },
+        { label: "test2", active: false },
+        { label: "test3", active: false },
     ]);
     return (
 
@@ -35,5 +38,26 @@ const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
         </SidebarContext.Provider>
     )
 }
+
+
+export const useUpdateSidebarItems = (
+    sidebarItems: SidebarItem[],
+    setSidebarItems: React.Dispatch<React.SetStateAction<SidebarItem[]>>,
+    activeIndex: number
+  ) => {
+    useEffect(() => {
+      // Check if the active item is already set correctly
+      const isAlreadyActive = sidebarItems.some((item, index) => item.active && index === activeIndex);
+      if (!isAlreadyActive) {
+        // Create a new array to avoid direct mutation
+        const updatedSidebarItems = sidebarItems.map((item, index) => ({
+          ...item,
+          active: index === activeIndex, // Set the active item based on the provided index
+        }));
+        setSidebarItems(updatedSidebarItems);
+      }
+    }, [setSidebarItems, sidebarItems, activeIndex]);
+  };
+
 
 export default MainLayout
