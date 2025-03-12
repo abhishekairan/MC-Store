@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState } from 'react';
-import { SidebarContext,useSidebar } from '@/context/context'
+import React from 'react';
+import { useSidebar } from '@/context/context'
 
 
 

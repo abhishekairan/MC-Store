@@ -10,7 +10,7 @@ const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
     const [sidebarItems, setSidebarItems] = useState([
         { label: "General", active: true },
         { label: "Voting Site", active: false },
-        { label: "Test1", active: true },
+        { label: "Test1", active: false },
         { label: "test2", active: false },
         { label: "test3", active: false },
     ]);
