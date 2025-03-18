@@ -15,7 +15,7 @@ const Page: React.FC = () => {
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar()
 
   
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 1);
+  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 0);
 
   const [formData, setFormData] = useState<FormData>({
     name: "Default Name",

@@ -48,6 +48,12 @@ body {
   background-size: cover;
 }
 
+.border-custom-no-border {
+  border: 1px solid #000;
+  border-image: url("/images/borders/black.png") 75 75 stretch;
+  border-image-outset: 12px !important;
+  border-image-width: 35px !important;
+}
 
 
 

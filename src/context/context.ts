@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 export interface SidebarItem {
     label: string;
     active: boolean;
+    href: string;
 }
 
 interface SidebarContextProps {
