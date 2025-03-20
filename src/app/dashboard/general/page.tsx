@@ -19,7 +19,7 @@ const Page: React.FC = () => {
 
   const [formData, setFormData] = useState<FormData>({
     name: "Default Name",
-    email: "default@example.com",
+    email: "default@gmail.com",
   });
   const [isDirty, setIsDirty] = useState(false);
 
