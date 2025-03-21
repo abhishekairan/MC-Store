@@ -9,10 +9,11 @@ const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
 
     const [sidebarItems, setSidebarItems] = useState([
         { label: "General", active: false, href: "/dashboard/general" },
-        { label: "Voting Site", active: true, href: "/dashboard/:slug" },
-        { label: "Test1", active: false, href: "/dashboard/test1" },
-        { label: "test2", active: false, href: "/dashboard/test1" },
-        { label: "test3", active: false, href: "/dashboard/test1" },
+        { label: "Voting Site", active: true, href: "/dashboard/voting_sites" },
+        { label: "Product", active: false, href: "/dashboard/product" },
+        { label: "Home", active: false, href: "/" },
+        { label: "Store", active: false, href: "/store" },
+        { label: "Settings", active: false, href: "/dashboard/settings" },
     ]);
     return (
 
