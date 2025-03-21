@@ -11,8 +11,7 @@ const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
         { label: "General", active: false, href: "/dashboard/general" },
         { label: "Voting Site", active: true, href: "/dashboard/voting_sites" },
         { label: "Product", active: false, href: "/dashboard/product" },
-        { label: "Home", active: false, href: "/" },
-        { label: "Store", active: false, href: "/store" },
+        
         { label: "Settings", active: false, href: "/dashboard/settings" },
     ]);
     return (
