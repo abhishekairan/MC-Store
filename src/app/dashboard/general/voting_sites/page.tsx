@@ -12,8 +12,9 @@ const page = () => {
   
 
   return (
-    <div> hello voting_sites page</div>
+    <div>voting </div>
   )
 }
 
 export default page
+

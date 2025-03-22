@@ -1,9 +1,10 @@
-"use client";
-
+"use client"
 import React, { useState, ChangeEvent } from "react";
+
 import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
 import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   name: string;
@@ -12,7 +13,7 @@ interface FormData {
 
 const Page =() => {
   
-  
+ 
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
   useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 0);
 
@@ -47,7 +48,7 @@ const Page =() => {
   // }
 
   return (
-  
+    <div>
     <Form handleChange={handleChange} handleSave={handleSave} handleDiscard={handleDiscard}>
      <FormField
         label="Name"
@@ -65,11 +66,27 @@ const Page =() => {
         value={formData.email}
         onChange={handleChange}
       />
+      
     </Form>
+    <br/><br/><br/>
+    <div className="border-x-2  align-bottom border-y-4 border-black flex-row w-70 h-40 pr-20 mt-10 "> 
+  <div id="personal-information"className="card-wrapper">
+   <div className="split-card split-card__primart ds-grid__col-47 ds-grid--wide__col-35 pb-2" >
+     <div className="ds-field personal-information-card__userField personal-information-card__emailAddress ds-field--non-empty ds-field--error">
+     <h1 className='ml-5 mt-5'>voting sites</h1></div>
+   </div>
+  </div>
+ </div>
+ 
+    
+    </div>
+
+    
   );
 };
 
 export default Page;
+
 
 
 
