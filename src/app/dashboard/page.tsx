@@ -8,16 +8,12 @@ interface Params {
 }
 
 
-
-const Dashboard = ({params}: { params: Params }) => {
-let category=["general","voting_sites","product","settings"]
-if (category.includes(params.slug)){
-  return <div> my post:{params.slug}</div>
-}
-else{
-  return <div> invalid </div>
-}
-  return <div> my post:{params.slug}</div>
+const Dashboard = () => {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  );
 }
 
 export default Dashboard;

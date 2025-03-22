@@ -1,39 +1,10 @@
-// import React from 'react'
-
-// const page = () => {
-//   return (
-   
-// <div className="panel-container">
-//     <h2>Users</h2>
-//     <button className="add-user-btn">Add User</button>
-//     <div className="user-list">
-    
-//       <div className="user-form display: none">
-//         <Form>
-//           <label>Name:</label>
-//           <input type="text" id="name" name="name"><br/>
-//           <label >Age:</label>
-//           <input type="number" id="age" name="age"><br/>
-//           <button className="save-user-btn">Save User</button>
-//           <button className="cancel-btn">Cancel</button>
-//         </Form>
-//       </div>
-//     </div>
-// </div>
-
-//   );
-// }
-
-// export default page
-
-
 "use client"
 
 
-  import { useState, useEffect } from 'react';
-  import axios from 'axios';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-  const page = () => {
+const page = () => {
     const [users, setUsers] = useState([]);
     const [name, setName] = useState('');
     const [age, setAge] = useState(0);

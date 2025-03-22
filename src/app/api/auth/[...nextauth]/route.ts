@@ -14,38 +14,6 @@ interface guildObject {
 }
 
 
-// Helper function to refresh the access token
-// async function refreshAccessToken(token: JWT) {
-//   try {
-//     const response = await fetch("https://discord.com/api/oauth2/token", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/x-www-form-urlencoded",
-//       },
-//       body: new URLSearchParams({
-//         client_id: process.env.DISCORD_CLIENT_ID!,
-//         client_secret: process.env.DISCORD_CLIENT_SECRET!,
-//         grant_type: "refresh_token",
-//         refresh_token: token.refreshToken,
-//       }),
-//     });
-
-//     const newTokens = await response.json();
-//     if (!response.ok) throw newTokens;
-
-//     return {
-//       ...token,
-//       accessToken: newTokens.access_token,
-//       refreshToken: newTokens.refresh_token ?? token.refreshToken,
-//       accessTokenExpires: Date.now() + newTokens.expires_in * 1000,
-//     };
-//   } catch (error) {
-//     console.error("Error refreshing access token:", error);
-//     return null;
-//   }
-// }
-
-
 
 export const authOptions: AuthOptions =  {
   providers: [
@@ -106,15 +74,5 @@ export const authOptions: AuthOptions =  {
   secret: process.env.NEXTAUTH_SECRET,
 }
 
-// export const authOptions: AuthOptions = handler
 const handler = NextAuth(authOptions);
 export {handler as POST, handler as GET}
-// const handler = NextAuth(authOptions);
-
-// export async function GET(req: NextRequest) {
-//   return handler(req);
-// }
-
-// export async function POST(req: NextRequest) {
-//   return handler(req);
-// }

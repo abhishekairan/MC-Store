@@ -1,11 +1,9 @@
 "use client";
 
-import Image from 'next/image';
 import { useState, ChangeEvent } from "react";
 import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
 import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-import { useRouter } from 'next/navigation';
 
 interface FormData {
   name: string;
@@ -13,7 +11,9 @@ interface FormData {
 }
 const page = () => {
 
-  
+    const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
+    useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 6);
+
     const [formData, setFormData] = useState<FormData>({
       name: "Default Name",
       email: "default@gmail.com",
