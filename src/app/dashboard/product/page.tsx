@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent } from "react";
 import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
 import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   name: string;
@@ -14,6 +15,10 @@ interface FormData {
 const Page: React.FC = () => {
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
   useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 2);
+
+  
+  const router = useRouter();
+
 
   const [formData, setFormData] = useState<FormData>({
     name: "Default Name",
@@ -52,7 +57,7 @@ const Page: React.FC = () => {
   return (
     <>
       <div className="h-16 border border-gray-600 flex items-center justify-between px-4 rounded-md">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
+        <button onClick={() => router.push('/dashboard/product/new')} className="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
         <input
           type="text"
           placeholder="Search..."
