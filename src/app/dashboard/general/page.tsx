@@ -74,6 +74,7 @@ const Page =() => {
    <div className="split-card split-card__primart ds-grid__col-47 ds-grid--wide__col-35 pb-2" >
      <div className="ds-field personal-information-card__userField personal-information-card__emailAddress ds-field--non-empty ds-field--error">
      <h1 className='ml-5 mt-5'>voting sites</h1></div>
+     
    </div>
   </div>
  </div>
