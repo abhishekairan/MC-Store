@@ -1,23 +1,19 @@
 import React from "react";
-import ProductLayout from "@/components/dashboard/ProductLayout";
+import CategoryLayout from "@/components/dashboard/CategoryLayout";
 
 const page = async ({ params }: { params: { id: string } }) => {
-    const { id } =await params;
+    const { id } = params;
     if (id === "new") {
         const data = {
             id: "0",
-            name: "This is product 1",
-            price: 0,
-            discount: 0,
-            stock: 0,
+            name: "This is Category 1",
             description: "",
             image: "",
-            category: 0,
-            actions: []
+            discount: 0,
         };
         return (
             <>
-                <ProductLayout props={data} />
+                <CategoryLayout props={data} />
             </>
         );
     }

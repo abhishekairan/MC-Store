@@ -4,7 +4,8 @@ import React, { useState, ChangeEvent } from "react";
 import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
 import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-
+import { useRouter } from "next/navigation";
+import Table from "@/components/Table";
 interface FormData {
   name: string;
   email: string;
@@ -14,6 +15,8 @@ interface FormData {
 const Page: React.FC = () => {
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
   useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 2);
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState<FormData>({
     name: "Default Name",
@@ -49,43 +52,23 @@ const Page: React.FC = () => {
     { id: '003', name: 'Category 3', description: '---', quantity: 300 },
   ];
 
+  const data = {
+    head: ['ID', 'Name', 'Description', 'Quantity', 'Actions'],
+    body: Categories.map((Category) => [Category.id, Category.name, Category.description, Category.quantity]),
+    actions: true
+  };
+
   return (
     <>
       <div className="h-16 border border-gray-600 flex items-center justify-between px-4 rounded-md">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">Add Category</button>
+        <button onClick={() => router.push('/dashboard/Category/new')} className="bg-blue-500 text-white px-4 py-2 rounded">Add Category</button>
         <input
           type="text"
           placeholder="Search..."
           className="px-4 py-2 rounded border border-gray-600"
         />
       </div>
-      <div className="flex flex-col mt-5">
-        <table className="mx-auto w-full text-left gap-6 border-separate border-spacing-y-5">
-          <thead>
-            <tr className="text-2xl">
-              <th className=" border-gray-600 border-y border-l p-2">Category ID</th>
-              <th className="border-gray-600 border-y p-2">Category Name</th>
-              <th className="border-gray-600 border-y p-2">Description</th>
-              <th className="border-gray-600 border-y p-2">Quantity</th>
-              <th className="border-gray-600 border-y border-r p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {Categories.map((Category) => (
-              <tr key={Category.id}>
-                <td className="text-gray-300 border-y border-l border-gray-600 p-2">{Category.id}</td>
-                <td className="text-gray-300 border-y border-gray-600 p-2">{Category.name}</td>
-                <td className="text-gray-300 border-y border-gray-600 p-2">{Category.description}</td>
-                <td className="text-gray-300 border-y border-gray-600 p-2">{Category.quantity}</td>
-                <td className="border-y border-r border-gray-600 p-2">
-                  <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-2">Edit</button>
-                  <button className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table props={data} />  
     </>
   );
 };

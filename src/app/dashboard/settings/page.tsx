@@ -81,27 +81,27 @@ const Page: React.FC = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label className="block text-gray-300 text-xl font-bold mb-2" htmlFor="clientAPI">
-              Client API
-            </label>
-            <input
-              type="text"
-              id="clientAPI"
-              name="clientAPI"
-              value={formData.clientAPI}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="flex flex-col">
             <label className="block text-gray-300 text-xl font-bold mb-2" htmlFor="applicationAPI">
-              Application API
+              Pterodactyl's Application API
             </label>
             <input
               type="text"
               id="applicationAPI"
               name="applicationAPI"
               value={formData.applicationAPI}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="block text-gray-300 text-xl font-bold mb-2" htmlFor="clientAPI">
+              Pterodactyl's Client API
+            </label>
+            <input
+              type="text"
+              id="clientAPI"
+              name="clientAPI"
+              value={formData.clientAPI}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
             />
