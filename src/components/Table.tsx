@@ -16,7 +16,7 @@ const Table: React.FC<{props: data}>= ({props}) => {
     <div className="flex flex-col mt-5">
     <table className="mx-auto w-full text-left gap-6 border-separate border-spacing-y-5">
       <thead>
-        <tr key="head" className="text-2xl" >
+        <tr key="headofthetable" className="text-2xl" >
             {props.head.map((head) => (
                 <th className="border-gray-600 border-y first:border-l last:border-r p-2">{head}</th>
             ))}

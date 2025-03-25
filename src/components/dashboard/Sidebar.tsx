@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
   const { sidebarItems } = useSidebar();
 
   return (
-    <div className="flex h-full flex-wrap content-start w-60 border-custom-no-border shadow-xl font-bold lg:bg-zinc-800/50 backdrop-blur-md gap-10 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-700 pt-10">
+    <div className="flex h-full flex-wrap content-start lg:w-48 border-custom-no-border shadow-xl font-bold lg:bg-zinc-800/50 backdrop-blur-md gap-10 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-700 pt-10">
       {sidebarItems.map((item, index) => (
         <SidebarItem key={index} label={item.label} active={item.active} href={item.href} />
       ))}
