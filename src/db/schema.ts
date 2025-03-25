@@ -4,9 +4,6 @@ import {
   varchar,
   text,
   float,
-  boolean,
-  uniqueIndex,
-  foreignKey,
 } from 'drizzle-orm/mysql-core';
 
 // Product Table

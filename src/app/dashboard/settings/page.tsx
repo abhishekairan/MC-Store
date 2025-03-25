@@ -14,7 +14,7 @@ interface FormData {
 const Page: React.FC = () => {
 
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 4);
+  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 6);
 
 
   const [formData, setFormData] = useState<FormData>({

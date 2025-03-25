@@ -8,14 +8,13 @@ import { SidebarContext, SidebarItem } from "@/context/context";
 const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
 
     const [sidebarItems, setSidebarItems] = useState([
-        { label: "General", active: true, href: "/dashboard/general" } ,
-        
+        { label: "Purchase", active: true, href: "/dashboard/purchase" } ,
         { label: "Product", active: false, href: "/dashboard/product" },
         { label: "Category", active: false, href: "/dashboard/Category" },
         { label: "Panel", active: false, href: "/dashboard/panel" },
-        { label: "Settings", active: false, href: "/dashboard/settings" },
         { label: "Discount", active: false, href: "/dashboard/Discount"},
-        { label: "Coupon", active: false, href: "/dashboard/Coupon"}
+        { label: "Coupon", active: false, href: "/dashboard/Coupon"},
+        { label: "Settings", active: false, href: "/dashboard/settings" },
 
     ]);
     return (

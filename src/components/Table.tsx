@@ -3,13 +3,13 @@
 import React from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 
-interface data {
+export interface TableData {
     head: string[],
     body: (string | number)[][],
     actions: boolean
 }
 
-const Table: React.FC<{props: data}>= ({props}) => {
+const Table: React.FC<{props: TableData}>= ({props}) => {
   const router = useRouter()
   const pathname = usePathname()
   return (

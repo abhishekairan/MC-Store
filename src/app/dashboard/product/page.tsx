@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, ChangeEvent } from "react";
-import { Form, FormField } from '@/components/dashboard/Form';
 import { useSidebar } from "@/context/context";
 import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
 import { useRouter } from "next/navigation";
-import Table from "@/components/Table";
+import ListViewLayout from "@/components/dashboard/ListViewLayout";
 
 interface FormData {
   name: string;
@@ -61,18 +60,14 @@ const Page: React.FC = () => {
     actions: true
   }
 
+  const ListViewLayoutdata = {
+    data: data,
+    name: "Product",
+    addbtn: true
+  }
+
   return (
-    <>
-      <div className="h-16 border border-gray-600 flex items-center justify-between px-4 rounded-md">
-        <button onClick={() => router.push('/dashboard/product/new')} className="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="px-4 py-2 rounded border border-gray-600"
-        />
-      </div>
-      <Table props={data} />
-    </>
+    <ListViewLayout props={ListViewLayoutdata}></ListViewLayout>
   );
 };
 

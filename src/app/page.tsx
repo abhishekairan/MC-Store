@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 import MainLayout from '@/components/mainLayout'
 
 
-export default function HomePage() {
+export default function purchasePage() {
   const [isCopied, setIsCopied] = useState(false);
   const [srvStatus, setSrvStatus] = useState({
     online: false,

@@ -15,33 +15,6 @@ const Page: React.FC = () => {
   const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
   useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 3);
 
-  const [formData, setFormData] = useState<FormData>({
-    name: "Default Name",
-    email: "default@gmail.com",
-    id: "000"
-  });
-  const [isDirty, setIsDirty] = useState(false);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setIsDirty(true);
-  };
-
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    setIsDirty(false);
-  };
-
-  const handleDiscard = () => {
-    setFormData({
-      name: "Default Name",
-      email: "default@example.com",
-      id: "000"
-    });
-    setIsDirty(false);
-  };
-
   // Sample Server list
   const server = [
     { id: '001', name: 'Server 1', ip: 'play.clubcolony.in', uuid: '0000-0000-0000-0000' },
@@ -55,7 +28,7 @@ const Page: React.FC = () => {
 
   return (
     <>
-      <div className="h-16 border border-gray-600 flex items-center justify-between px-4 rounded-md">
+      <div className="h-16 border border-gray-600 flex flex-row-reverse items-center justify-between px-4 rounded-md">
         <input
           type="text"
           placeholder="Search..."
