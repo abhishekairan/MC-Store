@@ -43,7 +43,7 @@ const ListViewLayout: React.FC<{ props: ListViewLayoutProps }> = ({ props }) => 
       >
         {props.addbtn && (
           <button
-            onClick={() => router.push(`/dashboard/${props.name}/new`)}
+            onClick={() => router.push(`/dashboard/${props.name.toLowerCase()}/new`)}
             className="bg-blue-500 text-white px-4 py-2 rounded"
           >
             Add {props.name}

@@ -56,7 +56,6 @@ export async function resetDummyData() {
     const [product1, product2] = await Promise.all([
       db.insert(productTable).values({
         name: "Smartphone",
-        actionsId: null,
         price: 500,
         discountId: discount1[0].insertId,
         stock: 100,
@@ -66,7 +65,6 @@ export async function resetDummyData() {
       }),
       db.insert(productTable).values({
         name: "Novel",
-        actionsId: null,
         price: 20,
         discountId: discount2[0].insertId,
         stock: 50,
@@ -133,10 +131,12 @@ export async function resetDummyData() {
       db.insert(serverActionTable).values({
         serverId: server1[0].insertId,
         command: "start",
+        product: product2[0].insertId,
       }),
       db.insert(serverActionTable).values({
         serverId: server2[0].insertId,
         command: "stop",
+        product: product1[0].insertId,
       }),
     ]);
 

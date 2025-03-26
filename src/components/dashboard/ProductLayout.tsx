@@ -1,30 +1,32 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Action {
-    id: string;
-    server: string;
+    id: number;
+    serverId: number;
     command: string;
-    delay: number;
+    product: number;
 }
 
 interface Props {
     id: string;
     name: string;
-    price?: number;
-    discount?: number;
-    stock?: number;
-    description?: string;
-    image?: string;
-    category?: number;
-    actions?: Action[];
+    price?: number | null;
+    discount?: number | null;
+    stock?: number | null;
+    description?: string | null;
+    image?: string | null;
+    category?: number | null;
+    actions?: Action[] | null ;
 }
 
 const ProductLayout: React.FC<{props: Props}> = ({props}) => {
+    const router = useRouter();
     const [formData, setFormData] = useState<Props>(props);
     const [imagePreview, setImagePreview] = useState<string | null>(props.image || null);
-    const [newAction, setNewAction] = useState<Action>({ id: '', server: '', command: 'command', delay: 0 });
+    const [newAction, setNewAction] = useState<Action>({ id: 0, serverId: 0, command: 'command', product: 0 });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -58,12 +60,17 @@ const ProductLayout: React.FC<{props: Props}> = ({props}) => {
         }));
     };
 
+    props.actions?.forEach((action) => {
+        if (action.id !== newAction.id) {
+            setNewAction(action);
+        }
+    });
     const addAction = () => {
         setFormData((prevData) => ({
             ...prevData,
             actions: [...(prevData.actions || []), newAction],
         }));
-        setNewAction({ id: '', server: '', command: '', delay: 0 });
+        setNewAction({ id: 0, serverId: 0, command: '', product: 0 });
     };
 
     const deleteAction = (index: number) => {
@@ -81,6 +88,7 @@ const ProductLayout: React.FC<{props: Props}> = ({props}) => {
     const handleDiscard = () => {
         setFormData(props);
         setImagePreview(props.image || null);
+        return router.back();
     };
 
     return (
@@ -193,7 +201,7 @@ const ProductLayout: React.FC<{props: Props}> = ({props}) => {
                             <select
                                 id="server"
                                 name="server"
-                                value={newAction.server}
+                                value={newAction.serverId}
                                 onChange={handleActionChange}
                                 className="shadow appearance-none border rounded py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline w-1/6"
                             >
@@ -204,10 +212,10 @@ const ProductLayout: React.FC<{props: Props}> = ({props}) => {
                             </select>
                             <input
                                 type="number"
-                                id="delay"
-                                name="delay"
-                                placeholder="Delay"
-                                value={newAction.delay}
+                                id="product"
+                                name="product"
+                                placeholder="Product"
+                                value={newAction.product}
                                 onChange={handleActionChange}
                                 className="shadow appearance-none border rounded py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline w-1/6"
                             />
@@ -239,7 +247,7 @@ const ProductLayout: React.FC<{props: Props}> = ({props}) => {
                         {formData.actions?.map((action, index) => (
                             <li key={index} className="text-gray-300 mb-2">
                                 <div className="flex justify-between items-center">
-                                    <span>{`Server: ${action.server}, Command: ${action.command}, Delay: ${action.delay}`}</span>
+                                    <span>{`Server: ${action.serverId}, Command: ${action.command}, Product: ${action.product}`}</span>
                                     <button
                                         type="button"
                                         onClick={() => deleteAction(index)}

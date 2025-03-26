@@ -35,7 +35,8 @@ export const productUtils = {
       products.map(async (product) => {
         const category = await fetchForeignKey(categoryTable, product.categoryId);
         const discount = await fetchForeignKey(discountTable, product.discountId);
-        return { ...product, category, discount };
+        const serverActions = await db.select().from(serverActionTable).where(eq(serverActionTable.product, product.id)).execute();
+        return { ...product, category, discount, serverActions };
       })
     );
   },
@@ -46,8 +47,8 @@ export const productUtils = {
 
     const category = await fetchForeignKey(categoryTable, product[0].categoryId);
     const discount = await fetchForeignKey(discountTable, product[0].discountId);
-
-    return { ...product[0], category, discount };
+    const serverActions = await db.select().from(serverActionTable).where(eq(serverActionTable.product, id)).execute();
+    return { ...product[0], category, discount, serverActions };
   },
 
   async getByIds(ids: number[]) {
@@ -56,7 +57,8 @@ export const productUtils = {
       products.map(async (product) => {
         const category = await fetchForeignKey(categoryTable, product.categoryId);
         const discount = await fetchForeignKey(discountTable, product.discountId);
-        return { ...product, category, discount };
+        const serverActions = await db.select().from(serverActionTable).where(eq(serverActionTable.product, product.id)).execute();
+        return { ...product, category, discount, serverActions };
       })
     );
   },
@@ -71,7 +73,8 @@ export const productUtils = {
       products.map(async (product) => {
         const category = await fetchForeignKey(categoryTable, product.categoryId);
         const discount = await fetchForeignKey(discountTable, product.discountId);
-        return { ...product, category, discount };
+        const serverActions = await db.select().from(serverActionTable).where(eq(serverActionTable.product, product.id)).execute();
+        return { ...product, category, discount, serverActions };
       })
     );
   },
@@ -230,6 +233,17 @@ export const serverActionUtils = {
           return { ...serverAction, server};
         })
       );
+    },
+
+    async getByProductID(productId: number) {
+      const serverActions = await db.select().from(productTable).where(eq(productTable.id, productId)).execute();
+      return Promise.all(
+        serverActions.map(async (serverAction) => {
+          const server = await fetchForeignKey(serverTable, serverAction.id);
+          return { ...serverAction, server };
+        })
+      );
+
     },
   
     async getById(id: number) {

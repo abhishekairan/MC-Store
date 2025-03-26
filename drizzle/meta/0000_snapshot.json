@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "d5b8a74e-250c-4636-aa1c-236df0647c2a",
+  "id": "84420e2b-2254-4c28-9256-e1434ab4e84d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "category": {
@@ -177,13 +177,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "actionsId": {
-          "name": "actionsId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "price": {
           "name": "price",
           "type": "float",
@@ -229,19 +222,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "product_actionsId_server_action_id_fk": {
-          "name": "product_actionsId_server_action_id_fk",
-          "tableFrom": "product",
-          "tableTo": "server_action",
-          "columnsFrom": [
-            "actionsId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "product_discountId_discount_id_fk": {
           "name": "product_discountId_discount_id_fk",
           "tableFrom": "product",
@@ -303,6 +283,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "product": {
+          "name": "product",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -313,6 +300,19 @@
           "tableTo": "server",
           "columnsFrom": [
             "serverId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "server_action_product_product_id_fk": {
+          "name": "server_action_product_product_id_fk",
+          "tableFrom": "server_action",
+          "tableTo": "product",
+          "columnsFrom": [
+            "product"
           ],
           "columnsTo": [
             "id"

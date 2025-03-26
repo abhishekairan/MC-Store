@@ -26,7 +26,6 @@ CREATE TABLE `discount` (
 CREATE TABLE `product` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`name` varchar(255) NOT NULL,
-	`actionsId` int,
 	`price` float NOT NULL,
 	`discountId` int,
 	`stock` int NOT NULL,
@@ -40,6 +39,7 @@ CREATE TABLE `server_action` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`serverId` int,
 	`command` text NOT NULL,
+	`product` int NOT NULL,
 	CONSTRAINT `server_action_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -91,10 +91,10 @@ CREATE TABLE `voting_site` (
 );
 --> statement-breakpoint
 ALTER TABLE `category` ADD CONSTRAINT `category_discountId_discount_id_fk` FOREIGN KEY (`discountId`) REFERENCES `discount`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `product` ADD CONSTRAINT `product_actionsId_server_action_id_fk` FOREIGN KEY (`actionsId`) REFERENCES `server_action`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `product` ADD CONSTRAINT `product_discountId_discount_id_fk` FOREIGN KEY (`discountId`) REFERENCES `discount`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `product` ADD CONSTRAINT `product_categoryId_category_id_fk` FOREIGN KEY (`categoryId`) REFERENCES `category`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `server_action` ADD CONSTRAINT `server_action_serverId_server_id_fk` FOREIGN KEY (`serverId`) REFERENCES `server`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `server_action` ADD CONSTRAINT `server_action_product_product_id_fk` FOREIGN KEY (`product`) REFERENCES `product`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `transaction` ADD CONSTRAINT `transaction_clientId_user_id_fk` FOREIGN KEY (`clientId`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `transaction` ADD CONSTRAINT `transaction_productId_product_id_fk` FOREIGN KEY (`productId`) REFERENCES `product`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `transaction` ADD CONSTRAINT `transaction_couponId_coupon_id_fk` FOREIGN KEY (`couponId`) REFERENCES `coupon`(`id`) ON DELETE no action ON UPDATE no action;

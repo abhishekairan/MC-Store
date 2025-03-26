@@ -1,5 +1,6 @@
 import React from "react";
 import CategoryLayout from "@/components/dashboard/CategoryLayout";
+import { categoryUtils } from "@/db/utils";
 
 const page = async ({ params }: { params: { id: string } }) => {
     const { id } = params;
@@ -17,10 +18,22 @@ const page = async ({ params }: { params: { id: string } }) => {
             </>
         );
     }
+    const dbData = await categoryUtils.getById(Number(id));
+    console.log(dbData);
+    if (!dbData) {
+        return <div>Category not found</div>;
+    }
+    const data = {
+        id: dbData.id.toString(),
+        name: dbData.name,
+        description: dbData.description,
+        image: dbData.image,
+        discount: Number(dbData.discountId),
+    }
     return (
-        <div>
-            {/* Handle other cases here */}
-        </div>
+        <>
+            <CategoryLayout props={data} />
+        </>
     );
 };
 

@@ -10,8 +10,7 @@ import {
 // Product Table
 export const productTable = mysqlTable('product', {
   id: int().primaryKey().autoincrement(),
-  name: varchar({ length: 255 }).notNull(),
-  actionsId: int().references(() => serverActionTable.id), // Foreign Key to ServerAction.id
+  name: varchar({ length: 255 }).notNull(), // Foreign Key to ServerAction.id
   price: float().notNull(),
   discountId: int().references(() => discountTable.id), // Optional Foreign Key to Discount.id
   stock: int().notNull(),
@@ -46,6 +45,7 @@ export const serverActionTable = mysqlTable('server_action', {
   id: int().primaryKey().autoincrement(),
   serverId: int().references(() => serverTable.id), // Foreign Key to Server.id
   command: text().notNull(),
+  product: int().references(() => productTable.id).notNull(), // Foreign Key to Product.id
 });
 
 // Discount Table

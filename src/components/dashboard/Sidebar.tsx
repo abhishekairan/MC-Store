@@ -28,10 +28,10 @@ const Sidebar: React.FC = () => {
   const [sidebarItems, setSidebarItems] = useState([
     { label: "Purchase", active: false, href: "/dashboard/purchase" },
     { label: "Product", active: false, href: "/dashboard/product" },
-    { label: "Category", active: false, href: "/dashboard/Category" },
+    { label: "Category", active: false, href: "/dashboard/category" },
     { label: "Panel", active: false, href: "/dashboard/panel" },
-    { label: "Discount", active: false, href: "/dashboard/Discount" },
-    { label: "Coupon", active: false, href: "/dashboard/Coupon" },
+    { label: "Discount", active: false, href: "/dashboard/discount" },
+    { label: "Coupon", active: false, href: "/dashboard/coupon" },
     { label: "Settings", active: false, href: "/dashboard/settings" },
   ]);
 

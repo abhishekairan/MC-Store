@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     id: string;
     name: string;
-    discount?: number;
-    description?: string;
-    image?: string;
+    discount?: number | null;
+    description?: string | null;
+    image?: string | null;
 }
 
 const CategoryLayout: React.FC<{props: Props}> = ({props}) => {
+    const router = useRouter();
     const [formData, setFormData] = useState<Props>(props);
     const [imagePreview, setImagePreview] = useState<string | null>(props.image || null);
 
@@ -45,6 +47,7 @@ const CategoryLayout: React.FC<{props: Props}> = ({props}) => {
     const handleDiscard = () => {
         setFormData(props);
         setImagePreview(props.image || null);
+        return router.back();
     };
 
     return (

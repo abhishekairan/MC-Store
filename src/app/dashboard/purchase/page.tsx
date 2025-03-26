@@ -28,7 +28,7 @@ const Page: React.FC = async () => {
     actions: false,
   };
 
-  console.log(data.body);
+  // console.log(data.body);
 
   const listViewLayoutData = {
     name: "Purchase",
