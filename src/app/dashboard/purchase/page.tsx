@@ -1,7 +1,4 @@
-"use client";
-import React, { useState, ChangeEvent } from "react";
-import { useSidebar } from "@/context/context";
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
+import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
 
 

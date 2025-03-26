@@ -1,14 +1,7 @@
-"use client"
-
 import React from 'react'
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-import { useSidebar } from "@/context/context";
 import ListViewLayout from '@/components/dashboard/ListViewLayout';
 
 const page = () => {
-
-  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 5);
 
   const coupons = [
     { id: '001', name: 'Coupons 1', description: '---', quantity: 100 },

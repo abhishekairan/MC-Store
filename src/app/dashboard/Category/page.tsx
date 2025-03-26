@@ -1,17 +1,8 @@
-"use client";
-
-import React, { useState, ChangeEvent } from "react";
-import { useSidebar } from "@/context/context";
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-import { useRouter } from "next/navigation";
+import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
 
 
 const Page: React.FC = () => {
-  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 2);
-
-  const router = useRouter();
 
   // Sample product list
   const Categories = [

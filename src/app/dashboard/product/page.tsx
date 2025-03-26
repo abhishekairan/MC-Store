@@ -1,9 +1,4 @@
-"use client";
-
-import React, { useState, ChangeEvent } from "react";
-import { useSidebar } from "@/context/context";
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-import { useRouter } from "next/navigation";
+import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
 
 interface FormData {
@@ -13,39 +8,6 @@ interface FormData {
 }
 
 const Page: React.FC = () => {
-  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 1);
-
-  
-  const router = useRouter();
-
-
-  const [formData, setFormData] = useState<FormData>({
-    name: "Default Name",
-    email: "default@gmail.com",
-    id: "000"
-  });
-  const [isDirty, setIsDirty] = useState(false);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setIsDirty(true);
-  };
-
-  const handleSave = () => {
-    console.log('Data saved:', formData);
-    setIsDirty(false);
-  };
-
-  const handleDiscard = () => {
-    setFormData({
-      name: "Default Name",
-      email: "default@example.com",
-      id: "000"
-    });
-    setIsDirty(false);
-  };
 
   // Sample product list
   const products = [

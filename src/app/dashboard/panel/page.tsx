@@ -1,9 +1,4 @@
-"use client";
-
-import React, { useState, ChangeEvent } from "react";
-import { Form, FormField } from '@/components/dashboard/Form';
-import { useSidebar } from "@/context/context";
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
+import React from "react";
 import Table from "@/components/Table";
 interface FormData {
   name: string;
@@ -12,8 +7,6 @@ interface FormData {
 }
 
 const Page: React.FC = () => {
-  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 3);
 
   // Sample Server list
   const server = [

@@ -3,23 +3,12 @@
 import React, { useState, useEffect } from 'react'
 import Header from "@/components/header";
 import { Sidebar,  } from "@/components/dashboard/Sidebar";
-import { SidebarContext, SidebarItem } from "@/context/context";
 
 const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
 
-    const [sidebarItems, setSidebarItems] = useState([
-        { label: "Purchase", active: true, href: "/dashboard/purchase" } ,
-        { label: "Product", active: false, href: "/dashboard/product" },
-        { label: "Category", active: false, href: "/dashboard/Category" },
-        { label: "Panel", active: false, href: "/dashboard/panel" },
-        { label: "Discount", active: false, href: "/dashboard/Discount"},
-        { label: "Coupon", active: false, href: "/dashboard/Coupon"},
-        { label: "Settings", active: false, href: "/dashboard/settings" },
-
-    ]);
     return (
 
-        <SidebarContext.Provider value={{ sidebarItems, setSidebarItems }}>
+        <>
             <div className="flex flex-col">
                 <Header>
                     <div className="text-5xl __className_4116d3 text-gray-300">
@@ -38,29 +27,29 @@ const MainLayout = ({ children, }: { children: React.ReactNode; }) => {
                     </div>
                 </div>
             </div>
-        </SidebarContext.Provider>
+        </>
     )
 }
 
 
-export const useUpdateSidebarItems = (
-    sidebarItems: SidebarItem[],
-    setSidebarItems: React.Dispatch<React.SetStateAction<SidebarItem[]>>,
-    activeIndex: number
-  ) => {
-    useEffect(() => {
-      // Check if the active item is already set correctly
-      const isAlreadyActive = sidebarItems.some((item, index) => item.active && index === activeIndex);
-      if (!isAlreadyActive) {
-        // Create a new array to avoid direct mutation
-        const updatedSidebarItems = sidebarItems.map((item, index) => ({
-          ...item,
-          active: index === activeIndex, // Set the active item based on the provided index
-        }));
-        setSidebarItems(updatedSidebarItems);
-      }
-    }, [setSidebarItems, sidebarItems, activeIndex]);
-  };
+// export const useUpdateSidebarItems = (
+//     sidebarItems: SidebarItem[],
+//     setSidebarItems: React.Dispatch<React.SetStateAction<SidebarItem[]>>,
+//     activeIndex: number
+//   ) => {
+//     useEffect(() => {
+//       // Check if the active item is already set correctly
+//       const isAlreadyActive = sidebarItems.some((item, index) => item.active && index === activeIndex);
+//       if (!isAlreadyActive) {
+//         // Create a new array to avoid direct mutation
+//         const updatedSidebarItems = sidebarItems.map((item, index) => ({
+//           ...item,
+//           active: index === activeIndex, // Set the active item based on the provided index
+//         }));
+//         setSidebarItems(updatedSidebarItems);
+//       }
+//     }, [setSidebarItems, sidebarItems, activeIndex]);
+//   };
 
 
 export default MainLayout

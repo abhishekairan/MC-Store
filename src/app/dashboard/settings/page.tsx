@@ -1,9 +1,6 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useUpdateSidebarItems } from "@/components/dashboard/MainLayout";
-
-import { useSidebar } from "@/context/context";
 import React, { useState, ChangeEvent } from "react";
 import { actionAsyncStorage } from "next/dist/server/app-render/action-async-storage.external";
 import { ACTION_SERVER_ACTION, ACTION_SERVER_PATCH } from "next/dist/client/components/router-reducer/router-reducer-types";
@@ -23,16 +20,9 @@ interface Action {
   delay: number;
 }
 
-
-
-
 interface Props {
   actions?: Action[];
 }
-
-
-
-
 
 
 
@@ -41,9 +31,6 @@ interface Props {
 const Page = () => {
 
   const router = useRouter();
-  const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-  useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 6);
-
 
   const [formData, setFormData] = useState<FormData>({
     siteName: "Default Site",
@@ -101,9 +88,6 @@ const Page = () => {
   });
     const [actions, setActions] =useState<Action[]>([]);
   
-    // const { sidebarItems, setSidebarItems: setSidebarItemsDispatch } = useSidebar();
-    // useUpdateSidebarItems(sidebarItems, setSidebarItemsDispatch, 1);
-    
     const handleActionChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
           const { name, value } = e.target;
          
