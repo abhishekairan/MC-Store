@@ -4,8 +4,8 @@ import React from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 
 export interface TableData {
-    head: string[],
-    body: (string | number)[][],
+    head: (string | number | null)[] ,
+    body: (string | number | any)[][],
     actions: boolean
 }
 

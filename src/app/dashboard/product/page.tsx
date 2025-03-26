@@ -1,24 +1,23 @@
 import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
+import { productUtils } from "@/db/utils";
 
-interface FormData {
-  name: string;
-  email: string;
-  id: string;
-}
+const Page: React.FC = async () => {
 
-const Page: React.FC = () => {
+  const dbData = await productUtils.getAll() 
 
   // Sample product list
-  const products = [
-    { id: '001', name: 'Product 1', price: '$10', quantity: 100 },
-    { id: '002', name: 'Product 2', price: '$20', quantity: 200 },
-    { id: '003', name: 'Product 3', price: '$30', quantity: 300 },
-  ];
+  const products = dbData.map((product) => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    category: product.category?.name,
+    image: product.image
+  }));
 
   const data = {
-    head: ['ID', 'Name', 'Price', 'Quantity', 'Actions'],
-    body: products.map((product) => [product.id, product.name, product.price, product.quantity]),
+    head: ['ID', 'Name', 'Price', 'Category','Image', 'Actions'],
+    body: products.map((product) => [product.id, product.name, product.price, product.category, product.image]),
     actions: true
   }
 

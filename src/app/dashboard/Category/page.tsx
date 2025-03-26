@@ -1,19 +1,16 @@
 import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
+import { categoryUtils } from "@/db/utils";
 
-
-const Page: React.FC = () => {
-
+const Page: React.FC = async () => {
+  
+  const dbData = await categoryUtils.getAll()
   // Sample product list
-  const Categories = [
-    { id: '001', name: 'Category 1', description: '---', quantity: 100 },
-    { id: '002', name: 'Category 2', description: '---', quantity: 200 },
-    { id: '003', name: 'Category 3', description: '---', quantity: 300 },
-  ];
+  const Categories = dbData.map((Category) => [Category.id, Category.name, Category.description, Category.image]);
 
   const data = {
-    head: ['ID', 'Name', 'Description', 'Quantity', 'Actions'],
-    body: Categories.map((Category) => [Category.id, Category.name, Category.description, Category.quantity]),
+    head: ['ID', 'Name', 'Description', 'Image', 'Actions'],
+    body: Categories,
     actions: true
   };
 

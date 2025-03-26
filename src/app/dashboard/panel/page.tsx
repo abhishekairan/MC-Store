@@ -1,17 +1,18 @@
 import React from "react";
 import Table from "@/components/Table";
-interface FormData {
-  name: string;
-  email: string;
-  id: string;
-}
+import { serverUtils } from "@/db/utils";
 
-const Page: React.FC = () => {
+const Page: React.FC = async () => {
+
+  const dbData = await serverUtils.getAll()
 
   // Sample Server list
-  const server = [
-    { id: '001', name: 'Server 1', ip: 'play.clubcolony.in', uuid: '0000-0000-0000-0000' },
-  ];
+  const server = dbData.map((server) => ({
+    id: server.id,
+    name: server.name,
+    ip: server.ip,
+    uuid: server.uuid
+  }));
 
   const data = {
     head: ['ID', 'Name', 'IP', 'UUID'],

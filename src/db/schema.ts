@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   float,
+  date,
 } from 'drizzle-orm/mysql-core';
 
 // Product Table
@@ -37,6 +38,7 @@ export const transactionTable = mysqlTable('transaction', {
   quantity: int().notNull(),
   couponId: int().references(() => couponTable.id), // Optional Foreign Key to Coupons.id
   amount: float().notNull(),
+  date: date().default(new Date()).notNull(),
 });
 
 // ServerAction Table

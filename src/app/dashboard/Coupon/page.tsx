@@ -1,13 +1,17 @@
 import React from 'react'
 import ListViewLayout from '@/components/dashboard/ListViewLayout';
+import { couponUtils } from '@/db/utils';
 
-const page = () => {
+const page: React.FC = async () => {
 
-  const coupons = [
-    { id: '001', name: 'Coupons 1', description: '---', quantity: 100 },
-    { id: '002', name: 'Coupons 2', description: '---', quantity: 200 },
-    { id: '003', name: 'Coupons 3', description: '---', quantity: 300 },
-  ]
+  const dbData = await couponUtils.getAll()
+
+  const coupons = dbData.map((coupon) => ({
+    id: coupon.id,
+    name: coupon.code,
+    description: coupon.amount,
+    quantity: coupon.type
+  }));
 
   const data = {
     head: ['ID', 'Name', 'Description', 'Quantity', 'Actions'],

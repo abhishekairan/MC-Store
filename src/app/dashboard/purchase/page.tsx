@@ -1,31 +1,38 @@
 import React from "react";
 import ListViewLayout from "@/components/dashboard/ListViewLayout";
+import { transactionUtils } from "@/db/utils";
 
+const Page: React.FC = async () => {
 
-const Page = () => {
+  const dbData = await transactionUtils.getAll()
 
-  const purchases = [
-    { id: "001", client: "001", IGN: "Fammy001", product: "Key x 1", quantity: "1", coupon: "None", date: "24-03-2025", amount: "10" },
-    { id: "002", client: "010", IGN: "MyMADmAX", product: "Rank - VIP", quantity: "1", coupon: "DIS10", date: "24-03-2025", amount: "100" },
-    { id: "003", client: "015", IGN: "HEHEXD", product: "MVP", quantity: "1", coupon: "None", date: "24-03-2025", amount: "1000" },
-  ];
+  const purchases = dbData.map((purchase) => ({
+    id: purchase.id,
+    date: purchase.date,
+    client: purchase.client,
+    IGN: purchase.ign,
+    product: purchase.product,
+    amount: purchase.amount,
+  }));
 
   const data = {
     head: ["ID", "Date", "Client", "IGN", "Product", "Amount"],
     body: purchases.map((purchase) => [
       purchase.id,
-      purchase.date,
-      purchase.client,
+      purchase.date.toDateString(),
+      purchase.client?.discordUsername,
       purchase.IGN,
-      purchase.product,
+      purchase.product?.name,
       purchase.amount,
     ]),
     actions: false,
   };
 
+  console.log(data.body);
+
   const listViewLayoutData = {
     name: "Purchase",
-    addbtn: true,
+    addbtn: false,
     data: data,
   }
 

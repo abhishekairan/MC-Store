@@ -19,7 +19,7 @@ const ListViewLayout: React.FC<{ props: ListViewLayoutProps }> = ({ props }) => 
   // Filter data based on the search query
   const filteredData = data.filter((row) =>
     row.some((value) =>
-      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      value?.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
