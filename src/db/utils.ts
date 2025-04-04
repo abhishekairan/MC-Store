@@ -80,7 +80,20 @@ export const productUtils = {
   },
 
   async create(data: any) {
-    return db.insert(productTable).values(data).execute();
+    console.log("Data being inserted:", data); // Log the data being inserted
+    const discount = await discountUtils.getById(data.discountId);
+    const category = await categoryUtils.getById(data.categoryId);
+    return db.insert(productTable).values([
+      {
+        name: data.name,
+        price: data.price,
+        discountId: data.discountId,
+        stock: data.stock,
+        description: data.description,
+        image: data.image,
+        categoryId: category?.id,
+      },
+    ]).execute();
   },
 
   async update(id: number, data: any) {

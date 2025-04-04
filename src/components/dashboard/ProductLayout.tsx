@@ -1,283 +1,261 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 interface Action {
-    id: number;
-    serverId: number;
-    command: string;
-    product: number;
+  id: number;
+  serverId: number;
+  command: string;
+  product: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }
 
 interface Props {
-    id: string;
-    name: string;
-    price?: number | null;
-    discount?: number | null;
-    stock?: number | null;
-    description?: string | null;
-    image?: string | null;
-    category?: number | null;
-    actions?: Action[] | null ;
+  id?: string;
+  name: string;
+  price?: number | null;
+  discountId?: number | null;
+  stock?: number | null;
+  description?: string | null;
+  image?: string | null;
+  categoryId?: number | null;
+  actions?: Action[] | null;
 }
 
-const ProductLayout: React.FC<{props: Props}> = ({props}) => {
-    const router = useRouter();
-    const [formData, setFormData] = useState<Props>(props);
-    const [imagePreview, setImagePreview] = useState<string | null>(props.image || null);
-    const [newAction, setNewAction] = useState<Action>({ id: 0, serverId: 0, command: 'command', product: 0 });
+const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
+  const router = useRouter();
+  const [formData, setFormData] = useState<Props>(props);
+  const [imagePreview, setImagePreview] = useState<string | null>(props.image || null);
+  const [categories, setCategories] = useState<Category[]>([]); // State for categories
+  const [isDirty, setIsDirty] = useState(false); // Track if the form is modified
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+  // Fetch categories from the database
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/api/dashboard/categories");
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Failed to load categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Detect changes in the form
+  useEffect(() => {
+    const isFormChanged = JSON.stringify(formData) !== JSON.stringify(props);
+    setIsDirty(isFormChanged);
+  }, [formData, props]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // Upload the image to the local API route
+        const response = await fetch("/api/dashboard/image", {
+          method: "POST",
+          body: formData,
+        });
+
+        const responseData = await response.json();
+        const imageUrl = responseData.filePath; // Get the image URL from the response
+        console.log("Image URL:", imageUrl);
+        setImagePreview(imageUrl); // Show the uploaded image preview
         setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
+          ...prevData,
+          image: imageUrl, // Update the form data with the new image URL
         }));
-    };
+        toast.success("Image uploaded successfully!");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast.error("Failed to upload image. Please try again.");
+      }
+    }
+  };
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    image: reader.result as string,
-                }));
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-    const handleActionChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        console.log(name, value);
-        setNewAction((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    if (!formData.name || !formData.price || !formData.stock || !formData.categoryId) {
+      toast.error("Please fill in all required fields, including category.");
+      return;
+    }
 
-    props.actions?.forEach((action) => {
-        if (action.id !== newAction.id) {
-            setNewAction(action);
-        }
-    });
-    const addAction = () => {
-        setFormData((prevData) => ({
-            ...prevData,
-            actions: [...(prevData.actions || []), newAction],
-        }));
-        setNewAction({ id: 0, serverId: 0, command: '', product: 0 });
-    };
+    try {
+      await axios.post("/api/dashboard/product", formData);
+      toast.success("Product saved successfully!");
+      router.push("/dashboard/products");
+      router.refresh();
+    } catch (error) {
+      console.error("Error saving product:", error);
+      toast.error("Failed to save product. Please try again.");
+    }
+  };
 
-    const deleteAction = (index: number) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            actions: prevData.actions?.filter((_, i) => i !== index),
-        }));
-    };
+  const handleDiscard = () => {
+    if (isDirty) {
+      const confirmDiscard = window.confirm("You have unsaved changes. Are you sure you want to discard?");
+      if (!confirmDiscard) return;
+    }
+    setFormData(props);
+    setImagePreview(props.image || null);
+    router.back(); // Redirect to the previous page
+  };
 
-    const handleSubmit = (e: FormEvent) => {
+  // Warn user if they try to navigate away with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        e.returnValue = ""; // Show browser confirmation dialog
+      }
     };
 
-    const handleDiscard = () => {
-        setFormData(props);
-        setImagePreview(props.image || null);
-        return router.back();
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
+  }, [isDirty]);
 
-    return (
-        <div className="w-full h-full p-8 shadow-md rounded-md">
-            <h2 className="text-2xl font-bold mb-4 text-gray-300">Add New Product</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col h-full">
-                <div className="flex gap-4 mb-4">
-                    <div className="flex flex-col items-start w-1/3">
-                        <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="image">
-                            Image
-                        </label>
-                        <input
-                            type="file"
-                            id="image"
-                            name="image"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                        />
-                        {imagePreview && (
-                            <img src={imagePreview} alt="Image Preview" className="mt-2 h-64 w-64 rounded" />
-                        )}
-                    </div>
-                    <div className="flex flex-col w-2/3">
-                        <div className="mb-4">
-                            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="name">
-                                Product Name
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="price">
-                                Price
-                            </label>
-                            <input
-                                type="number"
-                                id="price"
-                                name="price"
-                                value={formData.price || ''}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="discount">
-                                Discount
-                            </label>
-                            <input
-                                type="number"
-                                id="discount"
-                                name="discount"
-                                value={formData.discount || ''}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="stock">
-                                Stock
-                            </label>
-                            <input
-                                type="number"
-                                id="stock"
-                                name="stock"
-                                value={formData.stock || ''}
-                                onChange={handleChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="category">
-                        Category
-                    </label>
-                    <input
-                        type="number"
-                        id="category"
-                        name="category"
-                        value={formData.category || ''}
-                        onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="description">
-                        Description
-                    </label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        value={formData.description || ''}
-                        onChange={handleChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="actions">
-                        Actions
-                    </label>
-                    <div className="flex flex-col mb-4">
-                        <div className="flex gap-2 mb-2">
-                            <select
-                                id="server"
-                                name="server"
-                                value={newAction.serverId}
-                                onChange={handleActionChange}
-                                className="shadow appearance-none border rounded py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline w-1/6"
-                            >
-                                <option value="">Select Server</option>
-                                <option value="server1">Server 1</option>
-                                <option value="server2">Server 2</option>
-                                <option value="server3">Server 3</option>
-                            </select>
-                            <input
-                                type="number"
-                                id="product"
-                                name="product"
-                                placeholder="Product"
-                                value={newAction.product}
-                                onChange={handleActionChange}
-                                className="shadow appearance-none border rounded py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline w-1/6"
-                            />
-                            <input
-                                type="text"
-                                id="command"
-                                name="command"
-                                value={newAction.command}
-                                onChange={handleActionChange}
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
-                            />
-                        </div>
-                        <input
-                            type="hidden"
-                            id="id"
-                            name="id"
-                            value={newAction.id}
-                            onChange={handleActionChange}
-                        />
-                        <button
-                            type="button"
-                            onClick={addAction}
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        >
-                            Add Action
-                        </button>
-                    </div>
-                    <ul className="list-disc pl-5">
-                        {formData.actions?.map((action, index) => (
-                            <li key={index} className="text-gray-300 mb-2">
-                                <div className="flex justify-between items-center">
-                                    <span>{`Server: ${action.serverId}, Command: ${action.command}, Product: ${action.product}`}</span>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteAction(index)}
-                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline ml-2"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="flex items-center justify-end mt-auto pb-10">
-                    <button
-                        type="button"
-                        onClick={handleDiscard}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
-                    >
-                        Discard
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Save
-                    </button>
-                </div>
-            </form>
+  return (
+    <div className="w-full h-full p-8 shadow-md rounded-md">
+      <h2 className="text-2xl font-bold mb-4 text-gray-300">Add New Product</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col h-full">
+        {/* Form Fields */}
+        <div className="flex gap-4 mb-4">
+          <div className="flex flex-col items-start w-1/3">
+            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="image">
+              Image
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            {imagePreview && <img src={imagePreview} alt="Image Preview" className="mt-2 h-64 w-64 rounded" />}
+          </div>
+          <div className="flex flex-col w-2/3">
+            <div className="mb-4">
+              <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="name">
+                Product Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="price">
+                Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={formData.price || ""}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="stock">
+                Stock
+              </label>
+              <input
+                type="number"
+                id="stock"
+                name="stock"
+                value={formData.stock || ""}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="categoryId">
+                Category
+              </label>
+              <select
+                id="categoryId"
+                name="categoryId"
+                value={formData.categoryId || ""}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description || ""}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                rows={4}
+              />
+            </div>
+          </div>
         </div>
-    );
+        {/* Other Fields */}
+        <div className="flex items-center justify-end mt-auto pb-10">
+          <button
+            type="button"
+            onClick={handleDiscard}
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+          >
+            Discard
+          </button>
+          <button
+            type="submit"
+            disabled={!isDirty} // Disable save button if no changes
+            className={`${
+              isDirty ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
+            } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default ProductLayout;

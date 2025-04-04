@@ -8,6 +8,13 @@
       "when": 1743014842340,
       "tag": "0000_chief_pandemic",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1743746017486,
+      "tag": "0001_long_veda",
+      "breakpoints": true
     }
   ]
 }

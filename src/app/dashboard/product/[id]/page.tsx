@@ -9,11 +9,11 @@ const page = async ({ params }: { params: { id: string } }) => {
             id: "0",
             name: "This is product 1",
             price: 0,
-            discount: 0,
+            discountId: 0,
             stock: 0,
             description: "",
             image: "",
-            category: 0,
+            categoryId: 0,
             actions: []
         };
         return (
@@ -30,11 +30,11 @@ const page = async ({ params }: { params: { id: string } }) => {
         id: dbData.id.toString(),
         name: dbData.name,
         price: dbData.price,
-        discount: dbData.discountId,
+        discountId: dbData.discountId,
         stock: dbData.stock,
         description: dbData.description,
         image: dbData.image,
-        category: dbData.categoryId,
+        categoryId: dbData.categoryId,
         actions: dbData.serverActions.map((action: { serverId: any; id: any; command: any; product: any; }) => ({
             id: action.id,
             serverId: action.serverId ?? 0,
@@ -42,7 +42,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             product: action.product
         }))
     }
-    console.log(data);
+    // console.log(data);
     return (
         <div>
             <ProductLayout props={data} />
