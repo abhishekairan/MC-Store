@@ -45,12 +45,13 @@ const Table: React.FC<{ props: TableData }> = ({ props }) => {
   const handleDelete = async (id: number) => {
     try {
       // Call the API to delete the product from the database
-      await axios.post("/api/dashboard/product/delete", { id });
+      const type = pathname.split("/").filter(Boolean).pop();
+      const res = await axios.delete("/api/dashboard", { data: { type, id } });
 
       // Remove the row from the table
       setTableData((prevData) => prevData.filter((row) => row[0] !== id));
 
-      alert("Product deleted successfully!");
+      alert(res.data.message);
     } catch (error) {
       console.error("Error deleting product:", error);
       alert("Failed to delete product. Please try again.");

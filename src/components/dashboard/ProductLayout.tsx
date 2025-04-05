@@ -105,7 +105,7 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
     try {
       await axios.post("/api/dashboard/product", formData);
       toast.success("Product saved successfully!");
-      router.push("/dashboard/products");
+      router.push("/dashboard/product");
       router.refresh();
     } catch (error) {
       console.error("Error saving product:", error);
