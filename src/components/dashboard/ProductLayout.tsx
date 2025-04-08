@@ -21,7 +21,8 @@ interface Props {
   id?: string;
   name: string;
   price?: number | null;
-  discountId?: number | null;
+  discountAmount?: number | null;
+  discountType?: string | null; // "₹" or "%"
   stock?: number | null;
   description?: string | null;
   image?: string | null;
@@ -35,6 +36,7 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(props.image || null);
   const [categories, setCategories] = useState<Category[]>([]); // State for categories
   const [isDirty, setIsDirty] = useState(false); // Track if the form is modified
+  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
 
   // Fetch categories from the database
   useEffect(() => {
@@ -103,6 +105,8 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
     }
 
     try {
+      setIsSubmitting(true); // Start submission process
+
       await axios.post("/api/dashboard/product", formData);
       toast.success("Product saved successfully!");
       router.push("/dashboard/product");
@@ -110,6 +114,8 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
     } catch (error) {
       console.error("Error saving product:", error);
       toast.error("Failed to save product. Please try again.");
+    } finally {
+      setIsSubmitting(false); // Stop submission process
     }
   };
 
@@ -140,6 +146,13 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
 
   return (
     <div className="w-full h-full p-8 shadow-md rounded-md">
+      {/* Loading Overlay */}
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="text-white text-lg">Processing...</div>
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold mb-4 text-gray-300">Add New Product</h2>
       <form onSubmit={handleSubmit} className="flex flex-col h-full">
         {/* Form Fields */}
@@ -184,6 +197,39 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
+            </div>
+            <div className="mb-4 flex gap-4">
+              <div className="flex-1">
+                <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="discountAmount">
+                  Discount Amount
+                </label>
+                <input
+                  type="number"
+                  id="discountAmount"
+                  name="discountAmount"
+                  value={formData.discountAmount || ""}
+                  onChange={handleChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="discountType">
+                  Discount Type
+                </label>
+                <select
+                  id="discountType"
+                  name="discountType"
+                  value={formData.discountType || ""}
+                  onChange={handleChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="" disabled>
+                    Select a discount type
+                  </option>
+                  <option value="₹">₹</option>
+                  <option value="%">%</option>
+                </select>
+              </div>
             </div>
             <div className="mb-4">
               <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="stock">
@@ -245,9 +291,9 @@ const ProductLayout: React.FC<{ props: Props }> = ({ props }) => {
           </button>
           <button
             type="submit"
-            disabled={!isDirty} // Disable save button if no changes
+            disabled={!isDirty || isSubmitting} // Disable save button if no changes or during submission
             className={`${
-              isDirty ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
+              isDirty && !isSubmitting ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
             } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
           >
             Save

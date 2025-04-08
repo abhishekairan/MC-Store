@@ -23,9 +23,9 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Invalid type provided." }, { status: 400 });
     }
     // Check if the deletion was successful
-    if (!dbResult) {
-      return NextResponse.json({ error: "Failed to delete Category." }, { status: 500 });
-    }
+    // if (!dbResult) {
+    //   return NextResponse.json({ error: "Failed to delete Category." }, { status: 500 });
+    // }
     // Return a success response
 
     return NextResponse.json({ message: "Category deleted successfully." }, { status: 200 });

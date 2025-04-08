@@ -3,7 +3,8 @@ import CategoryLayout from "@/components/dashboard/CategoryLayout";
 import { categoryUtils } from "@/db/utils";
 
 const page = async ({ params }: { params: { id: string } }) => {
-    const { id } = params;
+    const { id } = await params; // Access `params.id` directly without destructuring
+
     if (id === "new") {
         const data = {
             id: "0",
@@ -18,18 +19,22 @@ const page = async ({ params }: { params: { id: string } }) => {
             </>
         );
     }
+
     const dbData = await categoryUtils.getById(Number(id));
     console.log(dbData);
+
     if (!dbData) {
         return <div>Category not found</div>;
     }
+
     const data = {
         id: dbData.id.toString(),
         name: dbData.name,
         description: dbData.description,
         image: dbData.image,
         discount: Number(dbData.discountId),
-    }
+    };
+
     return (
         <>
             <CategoryLayout props={data} />
