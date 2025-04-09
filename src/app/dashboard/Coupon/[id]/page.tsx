@@ -1,30 +1,44 @@
-
 import React from "react";
-import { Form , FormField} from "@/components/dashboard/form_coupon";
+import CouponLayout from "@/components/dashboard/CouponLayout";
+import { couponUtils } from "@/db/utils";
 
-const Page =  ({ params }: { params: { id: string } }) => {
+const page = async ({ params }: { params: { id: string } }) => {
     const { id } = params;
+
     if (id === "new") {
+        // Default data for creating a new coupon
         const data = {
             id: "0",
-            name: "This is product 1",
-            price:"400",
+            code: "",
+            amount: 0,
             type: "%",
-            code:"f466g5h",
-            
-            actions: []
         };
         return (
-            <>
-                <Form/>
-            </>
+            <div>
+                <CouponLayout props={data} />
+            </div>
         );
     }
+
+    // Fetch coupon data from the database
+    const dbData = await couponUtils.getById(Number(id));
+    if (!dbData) {
+        return <div>Coupon not found</div>;
+    }
+
+    // Map database data to the layout props
+    const data = {
+        id: dbData.id.toString(),
+        code: dbData.code,
+        amount: dbData.amount,
+        type: dbData.type,
+    };
+
     return (
         <div>
-            {/* Handle other cases here */}
+            <CouponLayout props={data} />
         </div>
     );
 };
 
-export default Page;
+export default page;

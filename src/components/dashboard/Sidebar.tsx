@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
     { label: "Product", active: false, href: "/dashboard/product" },
     { label: "Category", active: false, href: "/dashboard/category" },
     { label: "Panel", active: false, href: "/dashboard/panel" },
-    { label: "Discount", active: false, href: "/dashboard/discount" },
+    // { label: "Discount", active: false, href: "/dashboard/discount" },
     { label: "Coupon", active: false, href: "/dashboard/coupon" },
     { label: "Settings", active: false, href: "/dashboard/settings" },
   ]);

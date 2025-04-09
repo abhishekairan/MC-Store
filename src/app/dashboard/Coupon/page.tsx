@@ -14,7 +14,7 @@ const page: React.FC = async () => {
   }));
 
   const data = {
-    head: ['ID', 'Name', 'Description', 'Quantity', 'Actions'],
+    head: ['ID', 'Name', 'Amount', 'Type', 'Actions'],
     body: coupons.map((coupon) => [coupon.id, coupon.name, coupon.description, coupon.quantity]),
     actions: true
   };
